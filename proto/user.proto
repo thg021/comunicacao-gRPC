@@ -1,0 +1,37 @@
+syntax = "proto3";
+//Vai gerar pacotes para trabalharmos com go lang 
+option go_package = "./pb";
+package pb; 
+
+//tipos que teremos no nosso contrato,
+//Os numeros abaixos são os indices
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message UserResultStream {
+    string status = 1;
+    User user = 2;
+}
+
+message Users {
+    repeated User user = 1;
+
+}
+
+//Vamos realizar o stream inverso. O client passara via stream para o servidor 
+
+//Aqui temos a criação do serviço 
+// Função AddUser
+service UserService {
+    rpc AddUser (User) returns (User);
+    rpc AddUserVerbose (User) returns (stream UserResultStream);
+    rpc AddUsers (stream User) returns (Users);
+    rpc AddUsersStreamBoth (stream User) returns (stream UserResultStream);
+}
+
+
+
+
